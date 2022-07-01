@@ -7,30 +7,20 @@ export const Works:React.FunctionComponent = () => {
 	const testMoving = (event:any) => {
 			setT('moving');
 	}
-	
-	{/* React.useEffect(():void => { */}
-	{/* 	window.addEventListener('touchstart', () => { */}
-	{/* 	(DeviceOrientationEvent as any).requestPermission().then((x:any) => { */}
-	{/* 			setT(x); */}
-	{/* 	}).catch((e:any) => setT(e)); */}
-	{/* 	}) */}
-	{/* }, []) */}
 
+	
 	const handleClick = () => {
 
 
-		if (typeof (DeviceMotionEvent as any).requestPermission === 'function') 
-				{
-							(DeviceMotionEvent as any).requestPermission()
-						.then((permissionState: any) => {
-							setT(permissionState);
-											if (permissionState === 'granted') 
-												{
-																	// DeviceMotionEvent.requestPermission() has been granted
-																}
-																        })
-															                .catch(console.error);
-																                       }
+	if (typeof (DeviceMotionEvent as any).requestPermission === 'function') {
+		(DeviceMotionEvent as any).requestPermission().then((permissionState: any) => {
+			setT(permissionState); 
+			if (permissionState === 'granted') {
+			// DeviceMotionEvent.requestPermission() has been granted
+			}
+			}).catch(console.error);
+		}
 	}
-	return <button onClick={handleClick}>Works {t}</button>;
+	React.useEffect(handleClick,[]);
+	return <button >Works {t}</button>;
 }
