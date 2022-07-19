@@ -1,19 +1,17 @@
 import React from 'react';
-
+import { AngmentedScene } from '../AugmentedScene';
 
 export const Works:React.FunctionComponent = () => {
-	const [aungmentedMode, setAugmentedMode] = React.useState<boolean>(false);
+	const [augmentedMode, setAugmentedMode] = React.useState<boolean>(false);
 
 	const handleClick = () => {
 	if (typeof (DeviceMotionEvent as any).requestPermission === 'function') {
 		(DeviceMotionEvent as any).requestPermission().then((permissionState: any) => {
 			if (permissionState === 'granted') {
-				setAugmentedMode(true); 
-			// DeviceMotionEvent.requestPermission() has been granted
+				setAugmentedMode(true);
 			}
 			}).catch(console.error);
 		}
 	}
-	React.useEffect(handleClick,[]);
-	return <button >Enter</button>;
+	return augmentedMode ? <AngmentedScene/> : <button onClick={handleClick}>Enter</button>
 }

@@ -1,49 +1,39 @@
-import React from 'react';
-import { ArtWork } from './ArtWork';
-import { MolecularSynth } from './ArtWork/scupltures/MolecularSynth';
-import SculpTest from './ArtWork/scupltures/SculpTest';
-import SculpTestB from './ArtWork/scupltures/SculpTestB';
-import SculpTestC from './ArtWork/scupltures/SculpTestC';
+import React from "react";
+import { ArtWork } from "./ArtWork";
+import { FlyingLightBall } from "../objects/FlyingLightBall";
+import { ShowRoomRelativeSpace } from "./ShowRoomRelativeSpace";
+import { Selectable } from "../objects/Selectable";
 
-import { ShowRoomRelativeSpace } from './ShowRoomRelativeSpace';
+import {useStore} from "../../../three/hooks/useStore";
+const xRange = [-20, -10];
+const yRange = [1, 8];
+const zRange = [-5, 5];
+
+const rangeRandom = ([min, max]: any) => {
+	return Math.random() * (max - min) + min;
+}
 
 const _ShowRoom: React.FunctionComponent = () => {
+	const {githubGraphData}:any = useStore();
 
-    return <group>
-        <ShowRoomRelativeSpace>
 
-            <ArtWork title="cool" onClick={() => true} position={[3, 0, 8.5]} pupitreDiameter={0.5} pupitreHeight={1} >
-                {/* <SculpTestC scale={1} /> */}
-                <></>
-            </ArtWork>
+	
+	const floatItems = githubGraphData?.user.pinnedItems.nodes.map((node:any, index:number) => {
+		return <Selectable callback={() => false} tip={node.name}>
+			<mesh position={[rangeRandom(xRange), rangeRandom(yRange), rangeRandom(zRange)]}>
+				<sphereGeometry attach="geometry" args={[.5]} />
+				<meshPhongMaterial color="black" emissive="red" emissiveIntensity={1} />
+			</mesh>
+		</Selectable>
+	})
 
-            <ArtWork title="cool" onClick={() => true} position={[10, 0, 5]} pupitreDiameter={2} pupitreHeight={2} >
-                {/* <SculpTestB scale={3} /> */}
-                <></>
-            </ArtWork>
-
-            <ArtWork title="cool" onClick={() => true} position={[13, 0, 13.5]} pupitreDiameter={0.5} pupitreHeight={1.5} >
-                {/* <SculpTest scale={1} /> */}
-                <></>
-            </ArtWork>
-
-            <ArtWork title="cool" onClick={() => true} position={[11, 0, 10]} pupitreDiameter={1} pupitreHeight={0.5} >
-                {/* <SculpTest scale={1} /> */}
-                <></>
-            </ArtWork>
-
-            <ArtWork title="cool" onClick={() => true} position={[5, 0, 1]} pupitreDiameter={0.5} pupitreHeight={1} >
-                {/* <SculpTest scale={1} /> */}
-                <></>
-            </ArtWork>
-
-            <ArtWork title="cool" onClick={() => true} position={[6, 0, 4]} pupitreDiameter={0.5} pupitreHeight={1} >
-                {/* <MolecularSynth scale={0.5} /> */}
-                <></>
-            </ArtWork>
-
-        </ShowRoomRelativeSpace>
-    </group>
-}
+	return !!floatItems ? (
+		<group>
+			<ShowRoomRelativeSpace>
+				{floatItems} 
+			</ShowRoomRelativeSpace>
+		</group>
+	): <></>;
+};
 
 export const ShowRoom = React.memo(_ShowRoom);

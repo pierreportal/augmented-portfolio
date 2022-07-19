@@ -5,11 +5,12 @@ import { useFrame } from 'react-three-fiber';
 interface IOwnProps {
     position: [x: number, y: number, z: number]
     color: string;
-    still?: boolean;
+	still?: boolean;
+	size?: number;
     intensity?: number
 }
 
-export const FlyingLightBall: React.FunctionComponent<IOwnProps> = ({ position, color, still, intensity }) => {
+export const FlyingLightBall: React.FunctionComponent<IOwnProps> = ({ position, color, still, intensity, size=.03 }) => {
 
 
     const ref = React.useRef();
@@ -18,7 +19,7 @@ export const FlyingLightBall: React.FunctionComponent<IOwnProps> = ({ position, 
         type: still ? 'Static' : 'Dynamic',
         mass: 1,
         position,
-        args: [.3],
+        args: [size],
     }))
 
     let [x, y, z] = [0, 0, 0];
@@ -43,7 +44,7 @@ export const FlyingLightBall: React.FunctionComponent<IOwnProps> = ({ position, 
 
         // onPointerEnter={() => y = .5}
         ref={refC} position={position}>
-        <sphereBufferGeometry args={[.03]} />
+        <sphereBufferGeometry args={[size]} />
         <meshPhongMaterial color={color} emissive={color} emissiveIntensity={1} />
         <pointLight castShadow color={color} intensity={intensity || 0.4} distance={6} rotation={[Math.PI / 2, 0, 0]} />
     </mesh>

@@ -24,6 +24,11 @@ export const useStore = create((set: any) => ({
 		return set((state: any) => state.isOnMobile = mode);
 	},
 
+	githubGraphData: {},
+	setGithubGraphData: (data:any) => {
+		return set((state: any) => state.githubGraphData = data);
+	},
+
     music: null,
     setMusic: (music: any) => {
         return set((state: any) => state.music = music);

@@ -6,7 +6,7 @@ import FlatClass from '../../utils/constructorGeometry';
 import { SolidBody } from '../../utils/SolidBody';
 
 interface IShowRoomRelativeSpace {
-    children: Array<React.ReactElement>
+    children: Array<React.ReactElement> ;
     // position: [number, number, number]
 }
 
@@ -29,14 +29,15 @@ const S = new FlatClass(
 
 export const ShowRoomRelativeSpace: React.FunctionComponent<IShowRoomRelativeSpace> = ({ children }) => {
 
-    const c = children.map((child: React.ReactElement, i: number) => {
+	const c = children?.map((child: React.ReactElement, i: number) => {
         return S.innerWall({
-            position: [...child.props.position],
-            dimensions: child.props.dimensions
+            position: [...(child.props.position || child.props.children.props.position)],
+            dimensions: child.props.dimensions || child.props.children.props['data-dim']
         }, (wall: any) => {
             return React.cloneElement(child, { key: i, position: wall.position, dimensions: wall.dimensions })
         })
-    });
+	});
+
 
     const stepEntrance = S.innerWall({
         position: [SHOW_ROOM_WIDTH, 0, 0],

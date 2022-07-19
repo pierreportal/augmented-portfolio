@@ -1,4 +1,7 @@
-{
+import { gql } from "@apollo/client";
+
+export const GITHUB_QUERY = gql`
+	query GitHubQuery {
   user(login: "pierreportal") {
     bio
     avatarUrl(size: 100)
@@ -25,4 +28,5 @@
   viewer {
     login
   }
-}
+	
+}`;
