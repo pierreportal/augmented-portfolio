@@ -19,10 +19,18 @@ interface IShip {
 export const Ship: React.FunctionComponent<IShip> = ({ location }) => {
 
     const { progress } = useProgress();
-    const { enableControls, navigateByPlayerMoves } = useStore();
+    const { setSubtitle, enableControls, navigateByPlayerMoves } = useStore();
     const { controlOn } = useLockControls()
-    const pointer = <div id="pointer"></div>;
+	const pointer = <div id="pointer"></div>;
 
+
+
+	React.useEffect(() => {
+		if (window.localStorage.getItem("escapeAttempt") === "true"){
+			setSubtitle("I told you told stay here. You can't escape.");
+			window.localStorage.setItem("escapeAttempt", "false");
+		}
+	}, []);
 
 
     const startingPosition = !navigateByPlayerMoves && getUserPositionFromRoute(location);

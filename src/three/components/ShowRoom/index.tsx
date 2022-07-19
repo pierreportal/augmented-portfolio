@@ -17,7 +17,6 @@ const _ShowRoom: React.FunctionComponent = () => {
 
 	const floatItems = githubGraphData?.user.pinnedItems.nodes.map(
 		(node: any) => {
-			console.log(selected?.id === node.id);
 			return (
 				<Selectable
 					key={node.id}

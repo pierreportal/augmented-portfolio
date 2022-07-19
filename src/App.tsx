@@ -23,6 +23,8 @@ function App() {
 		setGithubGraphData(data);
 	}, [data, setGithubGraphData]);
 
+	console.log(window.localStorage);
+
 	React.useEffect(() => {
 		if (
 			/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
@@ -67,7 +69,6 @@ function App() {
 				Note: This 3D environment is a work in progress prototype for my
 				new personal website. Welcome home.
 			</span>
-			{/* {!enableControls && <TextPage section={mainTitle} />} */}
 			<div id="nap"></div>
 			<Routing />
 		</NotificationManager>
