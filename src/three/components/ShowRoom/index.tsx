@@ -20,9 +20,12 @@ const _ShowRoom: React.FunctionComponent = () => {
 			return (
 				<Selectable
 					key={node.id}
-					callback={() => setSelected(node)}
+					callback={() => {
+						window.open(node.url, '_blank');
+						setSelected(node)
+					}}
 					tip={node.name}
-					userInstructionTip={"okokok"}
+					userInstructionTip={node.url}
 				>
 					<mesh
 						castShadow
