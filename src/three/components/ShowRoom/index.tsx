@@ -1,39 +1,56 @@
 import React from "react";
-import { ArtWork } from "./ArtWork";
-import { FlyingLightBall } from "../objects/FlyingLightBall";
 import { ShowRoomRelativeSpace } from "./ShowRoomRelativeSpace";
 import { Selectable } from "../objects/Selectable";
 
-import {useStore} from "../../../three/hooks/useStore";
+import { useStore } from "../../../three/hooks/useStore";
 const xRange = [-20, -10];
 const yRange = [1, 8];
 const zRange = [-5, 5];
 
 const rangeRandom = ([min, max]: any) => {
 	return Math.random() * (max - min) + min;
-}
+};
 
 const _ShowRoom: React.FunctionComponent = () => {
-	const {githubGraphData}:any = useStore();
+	const [selected, setSelected] = React.useState<any>(null);
+	const { githubGraphData }: any = useStore();
 
+	const floatItems = githubGraphData?.user.pinnedItems.nodes.map(
+		(node: any) => {
+			console.log(selected?.id === node.id);
+			return (
+				<Selectable
+					key={node.id}
+					callback={() => setSelected(node)}
+					tip={node.name}
+					userInstructionTip={"okokok"}
+				>
+					<mesh
+						castShadow
+						receiveShadow
+						position={[
+							rangeRandom(xRange),
+							rangeRandom(yRange),
+							rangeRandom(zRange),
+						]}
+					>
+						<sphereGeometry attach="geometry" args={[0.5]} />
+						<meshPhongMaterial
+							color="white"
+							emissive={"black"}
+							emissiveIntensity={1}
+						/>
+					</mesh>
+				</Selectable>
+			);
+		}
+	);
 
-	
-	const floatItems = githubGraphData?.user.pinnedItems.nodes.map((node:any, index:number) => {
-		return <Selectable callback={() => false} tip={node.name}>
-			<mesh position={[rangeRandom(xRange), rangeRandom(yRange), rangeRandom(zRange)]}>
-				<sphereGeometry attach="geometry" args={[.5]} />
-				<meshPhongMaterial color="black" emissive="red" emissiveIntensity={1} />
-			</mesh>
-		</Selectable>
-	})
-
-	return !!floatItems ? (
+	return (
 		<group>
-			<ShowRoomRelativeSpace>
-				{floatItems} 
-			</ShowRoomRelativeSpace>
+			<ShowRoomRelativeSpace>{floatItems}</ShowRoomRelativeSpace>
 		</group>
-	): <></>;
+	);
 };
 
 export const ShowRoom = React.memo(_ShowRoom);
