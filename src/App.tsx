@@ -23,7 +23,6 @@ function App() {
 		setGithubGraphData(data);
 	}, [data, setGithubGraphData]);
 
-	console.log(window.localStorage);
 
 	React.useEffect(() => {
 		if (
