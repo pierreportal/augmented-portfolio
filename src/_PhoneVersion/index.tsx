@@ -24,6 +24,9 @@ import { PhoneAppMainContainer } from './styles';
 export const PhoneVersion:React.FunctionComponent = () => {
 
 	return <PhoneAppMainContainer>
+		<h1>
+			AR Phone Version in construction...
+		</h1>
 					<Works/>
 	</PhoneAppMainContainer>
 }

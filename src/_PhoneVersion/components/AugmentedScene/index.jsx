@@ -4,77 +4,102 @@ export const AngmentedScene = () => {
 	return (
 		<>
 			<Scene
-				renderer={`antialias: true;
-                   colorManagement: true;
-                   sortObjects: true;
-				   physicallyCorrectLights: true;
-                   maxCanvasWidth: ${window.innerWidth};
-                   maxCanvasHeight: ${window.innerHeight};`}
 			>
 				<Entity
-					id="box"
-					geometry={{ primitive: "box" }}
-					material={{ color: "red", opacity: 0.6 }}
-					animation__rotate={{
-						property: "rotation",
-						dur: 2000,
-						loop: true,
-						to: "360 360 360",
+					castShadow={true}
+					id="sphere"
+					geometry={{ primitive: "sphere", radius: 0.1 }}
+					material={{
+						castShadow: true,
+						reflectivity: 0.5,
+						shininess: 30,
+						color: "pink",
+						roughness: 0.5,
+						emissive: "cyan",
+						shader: "standard",
 					}}
-					animation__scale={{
-						property: "scale",
-						dir: "alternate",
-						dur: 100,
-						loop: true,
-						to: "1.1 1.1 1.1",
-					}}
-					position={{ x: 0, y: 1, z: -3 }}
-				>
-					<Entity
-						animation__scale={{
-							property: "scale",
-							dir: "alternate",
-							dur: 100,
-							loop: true,
-							to: "2 2 2",
-						}}
-						geometry={{
-							primitive: "box",
-							depth: 0.2,
-							height: 0.2,
-							width: 0.2,
-						}}
-						material={{ color: "#24CAFF" }}
-					/>
-				</Entity>
-				<Entity
-					primitive="a-plane"
-					rotation="-90 0 0"
-					height="100"
-					width="100"
+					position={{ x: 0, y: 1.15, z: -3 }}
+					light={{ type: "point", intensity: 0.4 }}
 				/>
-				<Entity primitive="a-light" type="ambient" color="#445451" />
-				<Entity
-					primitive="a-light"
-					type="point"
-					intensity="2"
-					position="2 4 4"
-				/>
-				<Entity primitive="a-light" type="ambient" color="white" />
-				<Entity primitive="geometry" />
 
-				<Entity primitive="a-camera">
-					<Entity primitive="a-cursor" />
-				</Entity>
 				<Entity
-					primitive="a-box"
-					position="0 0 0"
-					color="red"
-					scale=".2 .2 .2"
+					animation__click="property: scale; startEvents: click; easing: easeInCubic; dur: 150; from: 0.1 0.1 0.1; to: 1 1 1"
+					animation__fusing="property: scale; startEvents: fusing; easing: easeInCubic; dur: 1500; from: 1 1 1; to: 0.1 0.1 0.1"
+					animation__mouseleave="property: scale; startEvents: mouseleave; easing: easeInCubic; dur: 500; to: 1 1 1"
+					cursor="fuse: true"
+					cursorListener={true}
+					castShadow={true}
+					id="ring"
+					geometry={{
+						primitive: "ring",
+						radiusInner: 0.1,
+						radiusOuter: 0.2,
+					}}
+					material={{
+						castShadow: true,
+						reflectivity: 0.5,
+						shininess: 30,
+						color: "pink",
+						roughness: 0.5,
+						emissive: "cyan",
+						shader: "standard",
+					}}
+					rotation={{ x: -20, y: 50, z: 0 }}
+					position={{ x: 0, y: 2.15, z: -3 }}
+					light={{ type: "point", intensity: 0.4 }}
 				/>
+				<Entity
+					castShadow={true}
+					rotation={{ x: -40, y: 10, z: -4 }}
+					id="cylinder"
+					geometry={{
+						primitive: "cylinder",
+						radius: 0.1,
+						height: 0.7,
+					}}
+					material={{
+						castShadow: true,
+						reflectivity: 0.5,
+						shininess: 30,
+						color: "pink",
+						roughness: 0.5,
+						emissive: "cyan",
+						shader: "standard",
+					}}
+					position={{ x: 1, y: 3.15, z: -2 }}
+					light={{ type: "point", intensity: 0.4 }}
+				/>
+
+				<Entity
+					castShadow={true}
+					rotation={{ x: -40, y: 10, z: -4 }}
+					id="cone"
+					geometry={{
+						primitive: "cone",
+						radiusBottom: 0.1,
+						height: 0.2,
+						radiusTop: 0,
+					}}
+					material={{
+						castShadow: true,
+						reflectivity: 0.5,
+						shininess: 30,
+						color: "pink",
+						roughness: 0.5,
+						emissive: "cyan",
+						shader: "standard",
+					}}
+					position={{ x: -1, y: 2, z: -1.5 }}
+					light={{ type: "point", intensity: 0.4 }}
+				/>
+				<Entity primitive="a-camera">
+				</Entity>
+
 			</Scene>
 		</>
 	);
 };
 
+					// <Entity primitive="a-cursor" />
+// <Entity primitive="a-light" type="ambient" color="#445451" />
 //<Entity primitive="a-cursor"/>

@@ -1,80 +1,104 @@
-import React from 'react';
-import { CLI, UnknownCMD, Prompt, QuitScreenButton, PrintLine } from './styles';
-import { enterCmd } from './cliCtr';
+import React from "react";
+import { CLI, UnknownCMD, Prompt, QuitScreenButton, PrintLine } from "./styles";
+import { enterCmd } from "./cliCtr";
 
 interface ICLIScreenProps {
-    quit: (event: any) => void;
+	quit: (event: any) => void;
 }
 
 interface ICLIPrint {
-	cmd: string
-	fb: string
-	output?: any
+	cmd: string;
+	fb: string;
+	output?: any;
+	location: string;
 }
 
+export const CLIScreen: React.FunctionComponent<ICLIScreenProps> = ({
+	quit,
+}) => {
+	const [location, setLocation] = React.useState<string>(
+		"#/Users/pierreportal"
+	);
 
-export const CLIScreen: React.FunctionComponent<ICLIScreenProps> = ({ quit }) => {
+	const [inputValue, setInputValue] = React.useState<string>("");
 
-    const [location, setLocation] = React.useState<string>('~/Users/pierreportal');
+	const [history, setHistory] = React.useState<Array<ICLIPrint>>([]);
 
-    const [inputValue, setInputValue] = React.useState<string>('');
+	const cliInput = React.useRef(null);
 
-    const [history, setHistory] = React.useState<Array<ICLIPrint>>([]);
+	const handleValue = (event: any) => setInputValue(event.target.value);
 
-    const cliInput = React.useRef(null);
+	const handleFocus = () => (cliInput?.current as any)?.focus();
 
-    const handleValue = (event: any) => setInputValue(event.target.value);
+	React.useEffect(() => (cliInput?.current as any)?.focus(), [cliInput]);
 
-    const handleFocus = () => (cliInput?.current as any)?.focus();
+	const handleKeys = (event: any) => {
+		const { key, ctrlKey } = event;
+		const { value } = event.target;
 
-    React.useEffect(() => (cliInput?.current as any)?.focus(), [cliInput]);
+		if (ctrlKey) {
+			switch (key) {
+				case "c":
+					setHistory([
+						...history,
+						{ cmd: value, fb: "abort", location },
+					]);
+					setInputValue("");
+					break;
+			}
+		}
 
-    const handleKeys = (event: any) => {
-        const { key, ctrlKey } = event;
-        const { value } = event.target;
+		switch (key) {
+			case "Enter":
+				enterCmd(location, value, (c: any) => {
+					setHistory([...history, { cmd: value, fb: c, location }]);
+					if (value.split(" ")[0] === "cd") {
+						setLocation(c);
+					}
+				});
+				setInputValue("");
+		}
+	};
 
-        if (ctrlKey) {
-            switch (key) {
-                case 'c':
-                    setHistory([...history, { cmd: value, fb: 'abort' }]);
-                    setInputValue('');
-                    break
-            }
-        };
-
-        switch (key) {
-			case 'Enter':
-			enterCmd(location, value, (c:any) => setHistory([...history, { cmd: value, fb: c }]));
-                setInputValue('');
-        }
-    };
-
-    return <CLI onClick={handleFocus}>
-        <QuitScreenButton onClick={quit}>
-            Leave computer
-        </QuitScreenButton>
-		<code>
-            {history.map((h: any, i: number) => <PrintLine key={i}>
-                {
-                    h.fb === 'unknown'
-                        ? <UnknownCMD>{`Unknown command "${h.cmd}"`}</UnknownCMD>
-					: <>
-					<Prompt>{location}$</Prompt> {h.cmd}
-					{h.output}
-				</>
-                }
-			</PrintLine>
-            )}
-            <Prompt>
-                {location}${' '}
-            </Prompt>
-            <input
-                ref={cliInput}
-                value={inputValue}
-                onChange={handleValue}
-                type="text"
-                onKeyDown={handleKeys}
-            />
-        </code>
-    </CLI>
-}
+	return (
+		<CLI onClick={handleFocus}>
+			<QuitScreenButton onClick={quit}>Leave computer</QuitScreenButton>
+			<code>
+				{history.map((h: any, i: number) => (
+					<>
+						<PrintLine key={i}>
+							{h.cmd === "ls" ? (
+								<>
+									<Prompt>{h.location}$</Prompt> {h.cmd}
+									<span style={{ display: "block" }}>
+										{h.fb.map((x: any) => (
+											<span style={{color: "cyan", marginRight: 
+											"20px"}} key={x.name + `${i}`}>
+												{x.name}
+											</span>
+										))}
+									</span>
+								</>
+							) : h.fb === "unknown" ? (
+								<UnknownCMD>{`Unknown command "${h.cmd}"`}</UnknownCMD>
+							) : (
+								<>
+									<Prompt>{h.location}$</Prompt> {h.cmd}
+									{h.output}
+								</>
+							)}
+						</PrintLine>
+					</>
+				))}
+				<Prompt>{location}$ </Prompt>
+				<input
+					ref={cliInput}
+					value={inputValue}
+					onChange={handleValue}
+					type="text"
+					onKeyDown={handleKeys}
+				/>
+			</code>
+		</CLI>
+	);
+};
