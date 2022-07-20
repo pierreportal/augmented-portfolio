@@ -13,5 +13,5 @@ export const Works:React.FunctionComponent = () => {
 			}).catch(console.error);
 		}
 	}
-	return augmentedMode ? <AngmentedScene/> : <button onClick={handleClick}>Enter</button>
+	return <AngmentedScene/> 
 }
