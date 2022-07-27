@@ -8,7 +8,7 @@ interface ICLIScreenProps {
 
 interface ICLIPrint {
 	cmd: string;
-	fb: string;
+	fb: any;
 	output?: any;
 	location: string;
 }
@@ -51,6 +51,18 @@ export const CLIScreen: React.FunctionComponent<ICLIScreenProps> = ({
 		switch (key) {
 			case "Enter":
 				enterCmd(location, value, (c: any) => {
+					if (!c) {
+						setHistory([
+							...history,
+							{
+								cmd: value,
+								fb: "Invalid command",
+								location: location,
+							},
+						]);
+						return;
+					}
+
 					setHistory([...history, { cmd: value, fb: c, location }]);
 					if (value.split(" ")[0] === "cd") {
 						setLocation(c);
@@ -72,15 +84,39 @@ export const CLIScreen: React.FunctionComponent<ICLIScreenProps> = ({
 									<Prompt>{h.location}$</Prompt> {h.cmd}
 									<span style={{ display: "block" }}>
 										{h.fb.map((x: any) => (
-											<span style={{color: "cyan", marginRight: 
-											"20px"}} key={x.name + `${i}`}>
+											<span
+												style={{
+													textDecoration:
+														x.type === "object"
+															? "underline"
+															: "none",
+													color:
+														x.type === "string"
+															? "cyan"
+															: "red",
+													marginRight: "20px",
+												}}
+												key={x.name + `${i}`}
+											>
 												{x.name}
 											</span>
 										))}
 									</span>
 								</>
-							) : h.fb === "unknown" ? (
-								<UnknownCMD>{`Unknown command "${h.cmd}"`}</UnknownCMD>
+							) : h.fb.startsWith("Unknown command") ? (
+								<>
+									<Prompt>{h.location}$</Prompt> {h.cmd}
+									<span style={{ display: "block" }}>
+										<UnknownCMD>{`Unknown command "${h.cmd}"`}</UnknownCMD>
+									</span>
+								</>
+							) : h.fb === "Invalid command" ? (
+								<>
+									<Prompt>{h.location}$</Prompt> {h.cmd}
+									<span style={{ display: "block" }}>
+										<UnknownCMD>{`Error: "${h.cmd}"`}</UnknownCMD>
+									</span>
+								</>
 							) : (
 								<>
 									<Prompt>{h.location}$</Prompt> {h.cmd}

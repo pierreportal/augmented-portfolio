@@ -13,5 +13,9 @@ export const Works:React.FunctionComponent = () => {
 			}).catch(console.error);
 		}
 	}
-	return <AngmentedScene/> 
+	React.useEffect(() => {
+		document.addEventListener('load', handleClick);
+		return () => document.removeEventListener('load', handleClick);
+	}, []);
+	return augmentedMode ? <AngmentedScene/> : <button style={{zIndex:3}} onClick={handleClick}>Enter</button> 
 }

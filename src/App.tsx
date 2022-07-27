@@ -5,6 +5,7 @@ import { PhoneVersion } from "./_PhoneVersion";
 import { useStore } from "./three/hooks/useStore";
 import { GITHUB_QUERY } from "./gql/github/queries";
 import { useQuery } from "@apollo/client";
+
 export const DEBUG = false;
 
 function App() {
