@@ -102,13 +102,13 @@ export class InputController {
         this.current_!.mouseYDelta = this.current_!.mouseY - this.previous_.mouseY;
     };
 
-    onKeyDown_(event: KeyboardEvent) {
-        const { key } = event;
-        this.keys_[key] = true;
+	onKeyDown_(event: KeyboardEvent) {
+        const { code } = event;
+        this.keys_[code] = true;
     };
     onKeyUp_(event: KeyboardEvent) {
-        const { key } = event;
-        this.keys_[key] = false;
+        const { code } = event;
+        this.keys_[code] = false;
     };
     update() {
         this.previous_ = { ...this.current_ };
@@ -154,12 +154,12 @@ export class FirstPersonCamera {
         this.updateHeadBob_();
     }
 
-    updateVelocity_() {
-        const { s, w, a, d, S, W, A, D } = this.input_.keys_;
-        const UP = w;
-        const DOWN = s;
-        const RIGHT = d;
-        const LEFT = a;
+	updateVelocity_() {
+        const {  KeyS, KeyW, KeyA, KeyD } = this.input_.keys_;
+        const UP = KeyW;
+        const DOWN = KeyS;
+        const RIGHT = KeyD;
+        const LEFT = KeyA;
 
         const direction = new Vector3();
         const frontVector = new Vector3(0, 0, (DOWN ? 1 : 0) - (UP ? 1 : 0));
